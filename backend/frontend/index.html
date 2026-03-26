@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GAJAN TIKTOK</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="background:black;color:white">
+
+<h2>GAJAN TIKTOK</h2>
+
+<input id="email" placeholder="Email">
+<input id="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<br><br>
+
+<input id="url" placeholder="Video URL">
+<button onclick="upload()">Upload</button>
+
+<div id="feed"></div>
+
+<script>
+
+const API = "https://your-app.onrender.com"; // बाद में बदलेंगे
+
+async function login(){
+ let res = await fetch(API+"/login",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    email:email.value,
+    password:password.value
+  })
+ });
+ alert((await res.json()).msg);
+}
+
+async function upload(){
+ await fetch(API+"/upload",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    url:url.value
+  })
+ });
+ load();
+}
+
+async function load(){
+ let res = await fetch(API+"/videos");
+ let data = await res.json();
+
+ feed.innerHTML="";
+ data.forEach(v=>{
+  feed.innerHTML += `<video src="${v.url}" width="100%" controls></video>`;
+ });
+}
+
+load();
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>GAJAN TIKTOK</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{margin:0;background:black;color:white;font-family:sans-serif;}
+video{width:100%;height:100vh;object-fit:cover;}
+</style>
+</head>
+
+<body>
+
+<h2>GAJAN TIKTOK</h2>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<br><br>
+
+<input id="videoUrl" placeholder="Video URL">
+<button onclick="upload()">Upload</button>
+
+<div id="feed"></div>
+
+<script>
+
+let API = "https://YOUR-APP.onrender.com";
+
+async function login(){
+  const res = await fetch(API+"/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      email:email.value,
+      password:password.value
+    })
+  });
+
+  const data = await res.json();
+  alert("Login done");
+}
+
+async function upload(){
+  await fetch(API+"/upload",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      url:videoUrl.value
+    })
+  });
+
+  load();
+}
+
+async function load(){
+  const res = await fetch(API+"/videos");
+  const data = await res.json();
+
+  feed.innerHTML="";
+  data.forEach(v=>{
+    feed.innerHTML+=`
+      <video src="${v.url}" controls autoplay loop></video>
+    `;
+  });
+}
+
+</script>
+
+</body>
+</html>
